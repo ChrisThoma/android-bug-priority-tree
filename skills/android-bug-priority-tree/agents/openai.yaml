@@ -1,0 +1,4 @@
+interface:
+  display_name: "Android Bug Priority Tree"
+  short_description: "Journey-centered UX and functionality bug-hunt tracks"
+  default_prompt: "Use $android-bug-priority-tree with the host goal loop: map user journeys, compose the stable Track A-D finder waves, score demonstrated impact on the S1-S4 ladder, and escalate from uncovered functional states into applicable edge conditions."
