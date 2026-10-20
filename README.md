@@ -38,6 +38,7 @@ Invoke it directly with `/android-bug-priority-tree` in Claude Code or `$android
 5. **Demand impact** before counting a finding. A checklist match is not automatically S3, ambiguous product intent is a product question, and ordinary source smells remain leads until runtime behavior confirms them.
 6. **Budget** context with fresh agents, assigned device serials, bounded evidence, map deltas, and concise reports.
 7. **Verify** blind. Verifiers receive the defect, repro, app map, APK path, and environment, but not source, diffs, history, commit messages, or implementation notes. They repeat the user journey and one named adjacent invariant.
+8. **Stop** when the hunt stops paying. Hunt a release candidate or a fresh feature; after two rounds of only S3/S4 fixes, the report recommends shipping instead. Past the core-journey gate, a wave that confirms nothing above S3 ends finding, a fix that fails verification twice is parked as blocked with what was tried, and ledger edits land in one commit per round.
 
 See [SKILL.md](skills/android-bug-priority-tree/SKILL.md) for the full tree.
 

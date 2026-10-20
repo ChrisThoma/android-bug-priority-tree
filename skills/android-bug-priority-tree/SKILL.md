@@ -377,6 +377,16 @@ adb -s <SERIAL> shell settings put global animator_duration_scale 1
 
 Track C runs once per non-overlapping source partition and re-runs when new map leads or post-fix code warrant it. Track D runs once per named journey and metric; re-run only after fixes touch the measured behavior or prior measurements are inconclusive for a correctable reason.
 
+## When to hunt and when to stop
+
+A round is one hunt against one ledger (the `round-N` of priors); a wave is one dispatch inside it. The host's target count is a ceiling, not a quota.
+
+- **When to hunt:** start a round for a release candidate or a feature that just landed, not as a repeat on an app with no release date. Before wave 1, read the last two rounds' verified severities from `HUNT.md` or their ledgers. If every verified fix in both was S3/S4, tell the user once that shipping beats another round, and repeat that recommendation in the final report.
+- **Stop rule:** once the Tier 0 gate in "Escalation" is met, the first wave that confirms nothing above S3 ends finding. Dispatch no more finders, carry CONFIRMED and FIXED-UNVERIFIED issues through fix and verification, then file the final report. Do not climb further tiers to reach the count.
+- **Attempt cap:** the host's two-rejection rule is final for the round. A fix that fails verification twice becomes `BLOCKED`, with each attempt's approach and failure in its row, and goes to the priors' Fixers tar pits at wrap-up. No third or fourth attempt this round, on any model.
+- **Ledger hygiene:** ledger, coverage, and map edits, including the map's revision restamp after each fix install, stay in the working tree and land in one commit when the round closes, with the `HUNT.md` append. Never commit per restamp, note, or status change; fixers stage only their own files.
+- **Final report:** state what ended the round (count reached, turn limit, or stop rule), and append `round-N verified: S1 <n>, S2 <n>, S3 <n>, S4 <n>` to `HUNT.md` so the next round can apply the when-to-hunt check.
+
 ## Blind verification addendum
 
 Verifiers receive the defect description, exact repro, expected behavior, target APK path and variant, `APPMAP.md`, assigned serial, and required environment or measurement procedure. Explicitly forbid reading source code, diffs, git history, commit messages, or implementation notes. All verdict evidence comes from driving the installed build.
