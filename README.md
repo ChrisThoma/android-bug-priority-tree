@@ -8,6 +8,8 @@ Severity runs S1 to S4: S1 is catastrophic harm, S2 is task failure or a harmful
 
 This is the Android sibling of [ios-bug-priority-tree](https://github.com/ChrisThoma/ios-bug-priority-tree). The method, track interface, ledger format, and severity ladder are the same, so one host loop can drive either.
 
+More about the skill: [individuation.dev/projects/android-bug-priority-tree](https://individuation.dev/projects/android-bug-priority-tree/).
+
 ## Install
 
 With the skills CLI (works for Claude Code, Cursor, Codex, and others):
