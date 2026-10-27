@@ -1,6 +1,8 @@
 # android-bug-priority-tree
 
-An agent skill for [Claude Code](https://claude.com/claude-code) and [Codex](https://developers.openai.com/codex/cli) that guides a long, emulator-driven Android bug hunt around user journeys, UI functionality, understandable state, consistency, recovery, edge cases, and demonstrated user impact.
+![android-bug-priority-tree: an agent skill that runs a long Android bug hunt with subagents](assets/share-card.png)
+
+An agent skill for [Claude Code](https://claude.com/claude-code) and [Codex](https://developers.openai.com/codex/cli) that runs an AI bug hunt on your Android app in the emulator. It guides a long hunt with subagents around user journeys, UI functionality, understandable state, consistency, recovery, edge cases, and demonstrated user impact.
 
 Point a few agents at an app and tell them to "find bugs" and you get one wave of easy findings, then diminishing returns, then a lot of tokens spent re-walking the same happy paths. This skill gives an external goal/orchestration loop a testing method: map meaningful user goals, verify state transitions instead of counting visited screens, record coverage gaps, and escalate into relevant conditions only after normal journeys have real depth.
 
