@@ -34,7 +34,7 @@ The skill is a companion to a "find N distinct issues" goal loop. The loop owns 
 In Claude Code, start a goal along these lines:
 
 ```text
-/goal 10 distinct app issues fixed and independently verified, or an honest final tally after 40 turns.
+/goal 10 distinct app issues fixed and independently verified, or an honest final tally at the skill's stop rule or turn 40.
 Target: Phone. First: load android-bug-priority-tree; compose waves, prompts, budgets, map, coverage per it.
 ```
 
@@ -46,7 +46,7 @@ You can also invoke it directly with `/android-bug-priority-tree` in Claude Code
 It sets the target count and turn limit, the ledger format and the find, confirm, fix and verify loop, and leaves the testing method to the skill.
 
 ```text
-10 distinct app issues fixed and independently verified, or an honest final tally after 40 turns.
+10 distinct app issues fixed and independently verified, or an honest final tally at the skill's stop rule or turn 40.
 Target: Phone. One Target per ledger; never widen mid-hunt.
 First: load android-bug-priority-tree; compose waves, prompts, budgets, map, coverage per it.
 Resume: for this Target keep ISSUES statuses/turn/coverage, verify commits, then process FIXED-UNVERIFIED, CONFIRMED, CANDIDATE. Never reconstruct from git. Another Target's ledger -> ISSUES-<target>.md. No match = turn 1. Turn = one cycle (apply results, one dispatch), not one completion.
