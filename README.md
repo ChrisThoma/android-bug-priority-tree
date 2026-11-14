@@ -49,7 +49,7 @@ It sets the target count and turn limit, the ledger format and the find, confirm
 10 distinct app issues fixed and independently verified, or an honest final tally at the skill's stop rule or turn 40.
 Target: Phone. One Target per ledger; never widen mid-hunt.
 First: load android-bug-priority-tree; compose waves, prompts, budgets, map, coverage per it.
-Resume: for this Target keep ISSUES statuses/turn/coverage, verify commits, then process FIXED-UNVERIFIED, CONFIRMED, CANDIDATE. Never reconstruct from git. Another Target's ledger -> ISSUES-<target>.md. No match = turn 1. Turn = one cycle (apply results, one dispatch), not one completion.
+Resume: for this Target keep ISSUES statuses/turn/coverage, verify commits, then process FIXED-UNVERIFIED, CONFIRMED, CANDIDATE. Never reconstruct from git. Another Target's ledger -> ISSUES-<target>.md. No match = turn 1. Turn = one wake (apply results, one dispatch); bump once, first.
 Emulators: reuse AVDs, never duplicate. Phone = compact EMU-A + large EMU-B; Tablet = tablet + foldable; AVDs BugHunt-<App>-<Target>-A/-B on fixed ports, each with a `baseline` snapshot. Each emulator agent: ONE recorded serial (`adb -s`). Assert the skill baseline before wave 1 and after each worker; drift = load snapshot.
 APPMAP.md: structural only per skill (coverage/issue refs go to ISSUES); restamp its revision line per fix install.
 HUNT.md: read before wave 1. Finders get Everyone + matching (forward); fixers get Fixers (forward); verifiers NEVER get HUNT, hypotheses, fix hashes/history. Never restamp.
@@ -60,7 +60,7 @@ Stop and report per skill "When to hunt and when to stop"; 10 is a ceiling, not 
 Protocol:
 1. FIND: one skill wave (one finder/free emulator + off-device auditors). Each finder: one primary JID, map-read instruction, its coverage row, budget, own track only, <=10 prior lines. Spawn iff `CANDIDATE + CONFIRMED + FIXED-UNVERIFIED < 10 - VERIFIED`; at equality one free emulator may take an uncovered journey.
 2. CONFIRM per skill: independent repro (confirm agent or finder 2/2); crash/ANR needs logcat stack. Harness/contamination causes -> map tooling caveats.
-3. FIX: one worker/CONFIRMED issue, cheapest first; send description, repro, file pointers, APPMAP, Fixers priors. Worker commits `fix #N: <description>`; delegate smoke test; never patch. 3 stuck turns = BLOCKED/replace.
+3. FIX: one worker/CONFIRMED issue, most severe first; send description, repro, file pointers, APPMAP, Fixers priors. Worker commits `fix #N: <description>`; delegate smoke test; never patch. 3 stuck turns = BLOCKED/replace.
 4. VERIFY: app code committed (ledger/map/HUNT edits may be pending). Fresh verifier gets blind-addendum inputs (one serial), Target, budget. Exact repro + one named adjacent invariant (rotation/process death if stateful). Quote verdict. BLOCKED = replace.
 5. Verifier REJECTED = fix failed: CONFIRMED -> refix -> fresh verifier; two = BLOCKED/replace. CONFIRM-stage REJECTED is final.
 Done: `10/10 VERIFIED` + hashes, or turn-40 tally, with category mix, false positives + causes, blocked root groups, coverage totals, residuals. Then append rejection causes, tar pits, verifier conditions to HUNT.md.
