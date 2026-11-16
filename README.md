@@ -34,7 +34,7 @@ The skill is a companion to a "find N distinct issues" goal loop. The loop owns 
 In Claude Code, start a goal along these lines:
 
 ```text
-/goal 10 distinct app issues fixed and independently verified, or an honest final tally at the skill's stop rule or turn 40.
+/goal 10 distinct app issues fixed and independently verified, or an honest final tally once the skill's stop rule ends finding (a Tier 1 wave confirms no S1/S2) or at turn 40.
 Target: Phone. First: load android-bug-priority-tree; compose waves, prompts, budgets, map, coverage per it.
 ```
 
@@ -46,24 +46,24 @@ You can also invoke it directly with `/android-bug-priority-tree` in Claude Code
 It sets the target count and turn limit, the ledger format and the find, confirm, fix and verify loop, and leaves the testing method to the skill.
 
 ```text
-10 distinct app issues fixed and independently verified, or an honest final tally at the skill's stop rule or turn 40.
+10 distinct app issues fixed and independently verified, or an honest final tally once the skill's stop rule ends finding (a Tier 1 wave confirms no S1/S2) or at turn 40.
 Target: Phone. One Target per ledger; never widen mid-hunt.
 First: load android-bug-priority-tree; compose waves, prompts, budgets, map, coverage per it.
 Resume: for this Target keep ISSUES statuses/turn/coverage, verify commits, then process FIXED-UNVERIFIED, CONFIRMED, CANDIDATE. Never reconstruct from git. ISSUES/APPMAP/HUNT live in the Android app's dir (android/ if nested); another Target's ledger -> ISSUES-<target>.md. No match = turn 1. Turn = a wake that dispatches work; bump once, first; a results-only wake doesn't bump.
 Emulators: Phone = compact EMU-A + large EMU-B; Tablet = tablet + foldable; AVDs BugHunt-<Target>-A/-B shared by all apps, never per app, on fixed ports, each with a host-GPU `baseline` snapshot; missing AVD = ask the user first. Each emulator agent: ONE recorded serial (`adb -s`), lock per skill. Assert the skill baseline before wave 1 and after each worker. Re-baseline = load `baseline`; after a fix commits, `install -r` its builds/<hash>/ APK + save `baseline`.
 APPMAP.md: structural per skill; restamp its revision line per fix install.
 HUNT.md: read before wave 1. Finders get Everyone + matching (forward); fixers get Fixers (forward); verifiers NEVER get HUNT, hypotheses, fix hashes/history. Never restamp.
-Agents: set model on every dispatch: sonnet; opus after a rejected fix or 3 stuck turns. Except re-baseline, you never write app code, drive emulators, read source/diffs/build logs, or build; fixers build+test (one Gradle build per checkout), commit, copy the APK to .qa/hunt-<date>/builds/<hash>/, report diff, pass/fail, versionName. Finder/fixer/verifier prompts carry the skill budget block, else reject; setup workers get a one-line cap. Caps from dispatch `date`: finders 12 min, verifiers 8, fixers 25; never stop one early. One dispatch delta, then stop; wake on completions only; no heartbeat under 30 min.
+Agents: set model on every dispatch: sonnet; opus after a rejected fix or 3 stuck turns. Except re-baseline, you never write app code, drive emulators, read source/diffs/build logs, or build; fixers build+test (one Gradle build per checkout), commit, copy the APK to .qa/hunt-<date>/builds/<hash>/, report diff, pass/fail, versionName. Finder/fixer/verifier prompts carry the skill budget block, else reject; setup workers get a one-line cap. Caps from dispatch `date`: finders 12 min, verifiers 8, fixers 25; at cap+5 min enforce per skill. One dispatch delta, then stop; wake on completions or a cap+5 check; no other heartbeat under 30 min.
 ISSUES.md: header `Turn N of 40 · <Target>`, then a `Slot | AVD | Serial | Device` emulators table. One labelled pipe line per issue: `#N | JID | description: | expected basis: | repro: | ratio: | impact: | evidence: | S1-S4 | track: | duplicate/root: | fix: | commit: | status:`, verdict first in status (CANDIDATE/CONFIRMED/FIXED-UNVERIFIED/VERIFIED/REJECTED/BLOCKED); duplicate/over-cap S4 = REJECTED + reason. No `|` in prose, no markdown table. Edit rows in place; never re-read the ledger. Then `## Coverage`: one `J<n> | coverage: | tested: | next:` row per journey, all `discovered` at turn 1, no `status:` label. No chronology/interim tallies.
 Count distinct-root defects per skill: S1-S3, at most 2 S4.
-Stop per skill stop rule; 10 is a ceiling.
+10 is a ceiling.
 Protocol:
 1. FIND: one skill wave (one finder/free emulator + off-device auditors). Each finder: one primary JID, map-read instruction, its coverage row, own track only, <=10 prior lines. Spawn iff `CANDIDATE + CONFIRMED + FIXED-UNVERIFIED < 10 - VERIFIED`; at equality one free emulator may take an uncovered journey.
 2. CONFIRM per skill: independent repro (confirm agent or finder 2/2); crash/ANR needs logcat stack.
 3. FIX: one worker/CONFIRMED issue, most severe first; send description, repro, file pointers, APPMAP, Fixers priors. Worker commits `fix #N: <description>`; delegate smoke test; never patch. 3 stuck turns = BLOCKED/replace.
 4. VERIFY: fix committed (ledger/map/HUNT can wait). Fresh verifier gets a fresh build of it, blind-addendum inputs (one serial), Target. Exact repro + one named adjacent invariant (rotation/process death if stateful). Quote verdict. BLOCKED = replace.
 5. Verifier REJECTED = fix failed: CONFIRMED -> refix -> fresh verifier; two = BLOCKED/replace. CONFIRM-stage REJECTED is final.
-Done: `10/10 VERIFIED` + hashes, or turn-40 tally: category mix, false positives + causes, blocked roots, coverage, residuals. Then append rejection causes, tar pits, verifier conditions to HUNT.md.
+Done: `10/10 VERIFIED` + hashes, or stop-rule/turn-40 tally: category mix, false positives + causes, blocked roots, coverage, residuals. Then append rejection causes, tar pits, verifier conditions to HUNT.md.
 ```
 
 </details>
